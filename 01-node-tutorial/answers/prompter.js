@@ -1,6 +1,12 @@
 const http = require("http");
 var StringDecoder = require("string_decoder").StringDecoder;
 
+/////////
+let randomNumber = Math.floor(Math.random() * 100) + 1;
+let message = "Guess a number between 1 and 100.";
+let attempts = 0;
+/////////
+
 const getBody = (req, callback) => {
   const decode = new StringDecoder("utf-8");
   let body = "";
@@ -28,11 +34,12 @@ let item = "Enter something below.";
 const form = () => {
   return `
   <body>
-  <p>${item}</p>
+  <p>${message}</p>
   <form method="POST">
-  <input name="item"></input>
+  <input name="guess" type="number" min="1" max="100"></input>
   <button type="submit">Submit</button>
   </form>
+  <p>Attempts: ${attempts}</p>
   </body>
   `;
 };
@@ -43,13 +50,22 @@ const server = http.createServer((req, res) => {
   if (req.method === "POST") {
     getBody(req, (body) => {
       console.log("The body of the post is ", body);
-      // here, you can add your own logic
-      if (body["item"]) {
-        item = body["item"];
+      if (body["guess"]) {
+        let guess = parseInt(body["guess"], 10);
+        attempts++;
+        if (guess < randomNumber) {
+          message = "Low! Try again.";
+        } else if (guess > randomNumber) {
+          message = "High! Try again.";
+        } else {
+          message = `<span style="color: green; font-weight:bold;">Correct! The number was ${randomNumber}. You guessed it in ${attempts} attempts.</span>`;
+          // Reset the game
+          randomNumber = Math.floor(Math.random() * 100) + 1;
+          attempts = 0;
+        }
       } else {
-        item = "Nothing was entered.";
+        message = "Please enter a number between 1 and 100.";
       }
-      // Your code changes would end here
       res.writeHead(303, {
         Location: "/",
       });
@@ -62,3 +78,9 @@ const server = http.createServer((req, res) => {
 
 server.listen(3000);
 console.log("The server is listening on port 3000.");
+
+setTimeout(() => {
+  server.close(() => {
+    console.log('Server stopped');
+  });
+}, 10000);
