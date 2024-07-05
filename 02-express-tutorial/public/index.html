@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Product Search</title>
+        <style>
+            form {
+                display: flex;
+                flex-direction: column;
+                width: 200px;
+            }
+            label, input, select, button {
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+<body>
+    <h1>Product Search</h1>
+    <form id="searchForm">
+        <label for="search">Search:</label>
+        <input type="text" id="search" name="search">
+        
+        <label for="limit">Limit:</label>
+        <input type="number" id="limit" name="limit">
+        
+        <label for="maxPrice">Max Price:</label>
+        <input type="number" step="0.01" id="maxPrice" name="maxPrice">
+        
+        <label for="minPrice">Max Price:</label>
+        <input type="number" step="0.01" id="minPrice" name="minPrice">
+        
+        <label for="sort">Sort By:</label>
+        <select id="sort" name="sort">
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+    
+    <div id="results"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
