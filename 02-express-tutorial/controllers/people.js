@@ -43,4 +43,4 @@ const deletePerson = (req, res) => {
     }
   };
   
-module.exports = { getPeople, addPerson};//, updatePerson, deletePerson };
+module.exports = { getPeople, addPerson, updatePerson, deletePerson };
