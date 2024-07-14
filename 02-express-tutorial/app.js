@@ -100,6 +100,7 @@ app.post('/logon', (req, res) => {
 });
 //curl -X DELETE http://127.0.0.1:3000/logoff --cookie cookies.txt
 //curl -X DELETE http://127.0.0.1:3000/logoff
+
 app.delete('/logoff', (req, res) => {
   res.clearCookie('name');
   res.status(200).json({ message: "User logged off" });
