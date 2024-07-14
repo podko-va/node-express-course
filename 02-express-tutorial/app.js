@@ -5,7 +5,7 @@ const host = '127.0.0.1';
 const port = 3000;
 
 const { products } = require("./data");
-const { peopleRouter } = require("./routes/people");
+const peopleRouter = require("./routes/people");
 
 const logger = (req, res, next) => {
   console.log('${req.method} ${req.url} - ${new Date().toISOString()}');
