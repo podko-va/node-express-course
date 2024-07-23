@@ -5,12 +5,9 @@ const task = require('./routers/tasks');
 const connectBD = require('./db/connect')
 require('dotenv').config()
 //middleware
+app.use(express.static('./public'))
 app.use(express.json())
 //routes
-app.get('/hello',(req,res) => {
-    res.send('Task Manager App')
-})  
-
 app.use('/api/v1/tasks',task);
 
 const host = '127.0.0.1';
