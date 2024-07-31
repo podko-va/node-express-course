@@ -6,18 +6,19 @@ const getAllProductsStatic = async (req,res) => {
     const search = 'e'
     
     const products = await Product.find({
-        name: { $regex: search, $options: 'i'},
+        //name: { $regex: search, $options: 'i'},
+        price:{$gt:30}, //$lt,>,<
     })
-    .sort('name -price')
-    .select('name')
-    .limit(6)
-    .skip(1);
+    .sort('price')
+    .select('name price')
+    //.limit(6)
+    //.skip(1);
     console.log({ $regex: search, $options: 'i'});
     res.status(200).json({products, nbHits: products.length})
 }
 
 const getAllProduct = async(req,res) => {    
-    const {featured, company, name, sort, fields} = req.query
+    const {featured, company, name, sort, fields, numericFilters} = req.query
     const queryObject = {}
     if (featured){
         queryObject.featured = featured === 'true' ? true : false
@@ -27,6 +28,30 @@ const getAllProduct = async(req,res) => {
     }
     if (name){
         queryObject.name = { $regex: name, $options: 'i'}
+    }
+    if (numericFilters){
+        const operatorMap = {
+            '>':'$gt',
+            '>=':'$gte',
+            '<':'$lt',
+            '<=':'$lte',
+            '=':'$eq',
+        }
+        const regEx = /\b(<|>|<=|>=|=)\b/g
+        let filters = numericFilters.replace(
+            regEx,
+            (match) => `-${operatorMap[match]}-`    
+        )
+        const options = ['price', 'rating'];
+        filters = filters.split(',').forEach((item) => {
+            const [field,operator,value] = item.split('-')
+            if(options.includes(field)){
+                queryObject[field] = {[operator]:Number(value)}
+                queryObject[field] = {[operator]:Number(value)}
+            }
+        });
+
+        console.log(filters);
     }
     console.log(queryObject);
 
