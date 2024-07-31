@@ -47,7 +47,6 @@ const getAllProduct = async(req,res) => {
             const [field,operator,value] = item.split('-')
             if(options.includes(field)){
                 queryObject[field] = {[operator]:Number(value)}
-                queryObject[field] = {[operator]:Number(value)}
             }
         });
 
